@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace HRLeaveManagement.Application.DTOs
+namespace HRLeaveManagement.Application.DTOs.LeaveType
 {
-    public class LeaveTypeDto
+    public class UpdateLeaveTypeDto:BaseDto
     {
-        public string Name { get; set; } = String.Empty;
+        public string Name { get; set; } = string.Empty;
         public int DefaultDays { get; set; }
     }
 }
