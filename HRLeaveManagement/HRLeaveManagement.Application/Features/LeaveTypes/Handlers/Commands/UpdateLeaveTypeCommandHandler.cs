@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using HRLeaveManagement.Application.Features.LeaveTypes.Requests.Commands;
-using HRLeaveManagement.Application.Persistence.Contracts;
+using HRLeaveManagement.Application.Contracts.Persistence;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,9 @@ namespace HRLeaveManagement.Application.Features.LeaveTypes.Handlers.Commands
 
         public async Task<Unit> Handle(UpdateLeaveTypeCommand request, CancellationToken cancellationToken)
         {
+            #pragma warning disable CS8602 // Dereference of a possibly null reference.
             var leaveType = await _leaveTypeRepository.Get(request.LeaveTypeDto.Id);
+            #pragma warning restore CS8602 // Dereference of a possibly null reference.
             _mapper.Map(request.LeaveTypeDto, leaveType);
             await _leaveTypeRepository.Update(leaveType);
             return Unit.Value;
