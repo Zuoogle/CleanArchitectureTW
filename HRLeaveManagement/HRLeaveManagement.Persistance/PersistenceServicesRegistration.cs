@@ -1,4 +1,6 @@
-﻿using HRLeaveManagement.Application.Contracts.Persistence;
+﻿using HRLeaveManagement.Application.Contracts.Infrastructure;
+using HRLeaveManagement.Application.Contracts.Persistence;
+using HRLeaveManagement.Infrastructure.Mail;
 using HRLeaveManagement.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +26,10 @@ namespace HRLeaveManagement.Persistence
             services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
             services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
             services.AddScoped<ILeaveAllocationRepository, LeaveAllocationRepository>();
+
+            services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+            services.AddTransient<IEmailSender, EmailSender>();
+
             return services;
         }
     }
