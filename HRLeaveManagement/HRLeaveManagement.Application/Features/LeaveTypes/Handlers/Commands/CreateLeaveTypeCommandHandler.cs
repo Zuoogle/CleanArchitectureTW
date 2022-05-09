@@ -10,10 +10,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using HRLeaveManagement.Application.Responses;
+using HRLeaveManagement.Application.Exceptions;
 
 namespace HRLeaveManagement.Application.Features.LeaveTypes.Handlers.Commands
 {
-    public class CreateLeaveTypeCommandHandler : IRequestHandler<CreateLeaveTypeCommand, BaseCommandResponse>
+    public class CreateLeaveTypeCommandHandler : IRequestHandler<CreateLeaveTypeCommand, int>
     {
         private readonly ILeaveTypeRepository _leaveTypeRepository;
         private readonly IMapper _mapper;
@@ -24,23 +25,19 @@ namespace HRLeaveManagement.Application.Features.LeaveTypes.Handlers.Commands
             _mapper = mapper;
         }
 
-        public async Task<BaseCommandResponse> Handle(CreateLeaveTypeCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateLeaveTypeCommand request, CancellationToken cancellationToken)
         {
-            var response = new BaseCommandResponse();
-            var validator = new CreateLeaveRequestDtoValidator();
+
+            var validator = new CreateLeaveTypeDtoValidator();
             var validationResult = await validator.ValidateAsync(request.LeaveTypeDto);
             if (validationResult.IsValid==false)
             {
-                throw new Exception("Something went wrong");
+                throw new ValidationException(validationResult);
             }
             var leaveType = _mapper.Map<LeaveType>(request.LeaveTypeDto);
             leaveType = await _leaveTypeRepository.Add(leaveType);
 
-            response.Success = true;
-            response.Message = "Created Successfully";
-            response.Id = leaveType.Id;
-
-            return response;
+            return leaveType.Id;
         }
     }
 }

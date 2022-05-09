@@ -5,9 +5,9 @@ using System.Text;
 
 namespace HRLeaveManagement.Application.DTOs.LeaveType.Validators
 {
-    public class CreateLeaveRequestDtoValidator : AbstractValidator<CreateLeaveTypeDto>
+    public class CreateLeaveTypeDtoValidator : AbstractValidator<CreateLeaveTypeDto>
     {
-        public CreateLeaveRequestDtoValidator()
+        public CreateLeaveTypeDtoValidator()
         {
             Include(new ILeaveTypeDtoValidator());
         }
